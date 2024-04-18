@@ -90,7 +90,11 @@ namespace TrilhaApiDesafio.Controllers
         [HttpDelete("{id}")]
         public IActionResult Deletar(int id)
         {
-            // TODO: Remover a tarefa encontrada através do EF e salvar as mudanças (save changes)
+            bool sucesso = _service.Deletar(id);
+
+            if (!sucesso)
+                return NotFound();
+            
             return NoContent();
         }
     }

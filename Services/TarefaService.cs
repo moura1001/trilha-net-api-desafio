@@ -48,7 +48,7 @@ namespace TrilhaApiDesafio.Services
             if (tarefa.Status != EnumStatusTarefa.Pendente)
                 tarefa.Status = EnumStatusTarefa.Pendente;
 
-            _context.Add(tarefa);
+            _context.Tarefas.Add(tarefa);
             _context.SaveChanges();
             return tarefa;
         }
@@ -72,7 +72,7 @@ namespace TrilhaApiDesafio.Services
             tarefaBanco.Data = tarefa.Data;
             tarefaBanco.Status = tarefa.Status;
 
-            _context.Update(tarefaBanco);
+            _context.Tarefas.Update(tarefaBanco);
             _context.SaveChanges();
             return tarefaBanco;
         }
@@ -84,6 +84,18 @@ namespace TrilhaApiDesafio.Services
 
             if (tarefa.Data == DateTime.MinValue || tarefa.Data < DateTime.Now)
                 throw new Exception($"O prazo de conclusão da tarefa precisa ser depois do horário atual: {DateTime.Now:yyyy-MM-dd HH:mm}");
+        }
+
+        public bool Deletar(int id)
+        {
+            var tarefaBanco = ObterPorId(id);
+            if (tarefaBanco == null)
+                return false;
+            
+            _context.Tarefas.Remove(tarefaBanco);
+            _context.SaveChanges();
+
+            return true;
         }
     }
 }
