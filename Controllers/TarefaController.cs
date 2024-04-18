@@ -72,9 +72,19 @@ namespace TrilhaApiDesafio.Controllers
         [HttpPut("{id}")]
         public IActionResult Atualizar(int id, Tarefa tarefa)
         {
-            // TODO: Atualizar as informações da variável tarefaBanco com a tarefa recebida via parâmetro
-            // TODO: Atualizar a variável tarefaBanco no EF e salvar as mudanças (save changes)
-            return Ok();
+            try
+            {
+                var tarefaBanco = _service.Atualizar(id, tarefa);
+
+                if (tarefaBanco == null)
+                    return NotFound();
+
+                return Ok(tarefaBanco);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpDelete("{id}")]
