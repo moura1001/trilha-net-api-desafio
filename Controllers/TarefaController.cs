@@ -37,12 +37,8 @@ namespace TrilhaApiDesafio.Controllers
         [HttpGet("ObterPorTitulo")]
         public IActionResult ObterPorTitulo(string titulo)
         {
-            var tarefa = _service.ObterPorTitulo(titulo);
-
-            if (tarefa == null)
-                return NotFound();
-
-            return Ok(tarefa);
+            var tarefas = _service.ObterPorTitulo(titulo);
+            return Ok(tarefas);
         }
 
         [HttpGet("ObterPorData")]
@@ -62,8 +58,8 @@ namespace TrilhaApiDesafio.Controllers
         [HttpPost]
         public IActionResult Criar(Tarefa tarefa)
         {
-            // TODO: Adicionar a tarefa recebida no EF e salvar as mudanças (save changes)
-            return CreatedAtAction(nameof(ObterPorId), new { id = tarefa.Id }, tarefa);
+            var tarefaBanco = _service.Criar(tarefa);
+            return CreatedAtAction(nameof(ObterPorId), new { id = tarefaBanco.Id }, tarefaBanco);
         }
 
         [HttpPut("{id}")]

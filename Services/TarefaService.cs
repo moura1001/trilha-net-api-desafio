@@ -22,12 +22,13 @@ namespace TrilhaApiDesafio.Services
             return _context.Tarefas.ToList();
         }
 
-        public Tarefa ObterPorTitulo(string titulo)
+        public List<Tarefa> ObterPorTitulo(string titulo)
         {
             if (string.IsNullOrWhiteSpace(titulo))
                 return null;
 
-            return _context.Tarefas.Where(tarefa => string.Equals(tarefa.Titulo, titulo)).FirstOrDefault();
+            titulo = titulo.ToLower();
+            return _context.Tarefas.Where(tarefa => tarefa.Titulo.ToLower().Contains(titulo)).ToList();
         }
 
         public List<Tarefa> ObterPorData(DateTime data)
@@ -38,6 +39,13 @@ namespace TrilhaApiDesafio.Services
         public List<Tarefa> ObterPorStatus(EnumStatusTarefa status)
         {
             return _context.Tarefas.Where(tarefa => tarefa.Status == status).ToList();
+        }
+
+        public Tarefa Criar(Tarefa tarefa)
+        {
+            _context.Add(tarefa);
+            _context.SaveChanges();
+            return tarefa;
         }
     }
 }
