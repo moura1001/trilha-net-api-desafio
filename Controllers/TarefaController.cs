@@ -58,8 +58,15 @@ namespace TrilhaApiDesafio.Controllers
         [HttpPost]
         public IActionResult Criar(Tarefa tarefa)
         {
-            var tarefaBanco = _service.Criar(tarefa);
-            return CreatedAtAction(nameof(ObterPorId), new { id = tarefaBanco.Id }, tarefaBanco);
+            try
+            {
+                var tarefaBanco = _service.Criar(tarefa);
+                return CreatedAtAction(nameof(ObterPorId), new { id = tarefaBanco.Id }, tarefaBanco);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPut("{id}")]

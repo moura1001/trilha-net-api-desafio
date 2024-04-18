@@ -43,6 +43,15 @@ namespace TrilhaApiDesafio.Services
 
         public Tarefa Criar(Tarefa tarefa)
         {
+            if (string.IsNullOrWhiteSpace(tarefa.Titulo))
+                throw new Exception("A tarefa precisa de um título");
+
+            if (tarefa.Data == DateTime.MinValue || tarefa.Data < DateTime.Now)
+                throw new Exception($"O prazo de conclusão da tarefa precisa ser depois do horário atual: {DateTime.Now:yyyy-MM-dd HH:mm}");
+            
+            if (tarefa.Status != EnumStatusTarefa.Pendente)
+                tarefa.Status = EnumStatusTarefa.Pendente;
+
             _context.Add(tarefa);
             _context.SaveChanges();
             return tarefa;
